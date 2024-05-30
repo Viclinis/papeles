@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Image at the top -->
+    <ImageView
+        android:id="@+id/imgVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/foto1"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- RadioGroup for vehicle type -->
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/radioMotorcycle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motocicleta"/>
+
+        <RadioButton
+            android:id="@+id/radioCar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Automóvil"/>
+    </RadioGroup>
+
+    <!-- Button to add photo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnAddPhoto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Agregar Foto del Vehículo"
+            android:enabled="false"/>
+
+        <ImageView
+            android:id="@+id/imgPhotoStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- Button to add document -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnAddDocument"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Agregar Documento"
+            android:enabled="false"/>
+
+        <ImageView
+            android:id="@+id/imgDocumentStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- Button to add data -->
+    <Button
+        android:id="@+id/btnAddData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agregar Datos"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Row for Go Back and Save buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnGoBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Regresar"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar"
+            android:enabled="false"/>
+    </LinearLayout>
+</LinearLayout>
