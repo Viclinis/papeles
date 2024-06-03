@@ -67,11 +67,19 @@
         android:layout_marginBottom="16dp">
 
         <Button
-            android:id="@+id/btnAddDocument"
+            android:id="@+id/btnAddSoat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Agregar Documento"
+            android:text="Agregar Soat"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/btnAddCDA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Agregar CDA"
             android:enabled="false"/>
 
         <ImageView
@@ -88,7 +96,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Agregar Datos"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:enabled="false"/>
 
     <!-- Row for Go Back and Save buttons -->
     <LinearLayout

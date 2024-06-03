@@ -1,5 +1,7 @@
 package com.example.papers
+
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,19 +16,22 @@ class AddDocumentActivity : AppCompatActivity() {
     private lateinit var imgVehicle: ImageView
     private lateinit var radioGroup: RadioGroup
     private lateinit var btnAddPhoto: Button
-    private lateinit var btnAddDocument: Button
+    private lateinit var btnAddSoat: Button
+    private lateinit var btnAddCDA: Button
     private lateinit var btnGoBack: Button
     private lateinit var btnAddData: Button
     private lateinit var btnSave: Button
     private lateinit var imgPhotoStatus: ImageView
     private lateinit var imgDocumentStatus: ImageView
 
-    private val PICK_IMAGE_REQUEST = 1
-    private val PICK_DOCUMENT_REQUEST = 2
+    var imageUri: Uri? = null
+    var documentSoat: Uri? = null
+    var documentCDA: Uri? = null
+    var vehicleType: String? = null
 
-    private var imageUri: Uri? = null
-    private var documentUri: Uri? = null
-    private var vehicleType: String? = null
+    var plate: String? = null
+    var brand: String? = null
+    var model: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,8 @@ class AddDocumentActivity : AppCompatActivity() {
         imgVehicle = findViewById(R.id.imgVehicle)
         radioGroup = findViewById(R.id.radioGroup)
         btnAddPhoto = findViewById(R.id.btnAddPhoto)
-        btnAddDocument = findViewById(R.id.btnAddDocument)
+        btnAddSoat = findViewById(R.id.btnAddSoat)
+        btnAddCDA = findViewById(R.id.btnAddCDA)
         btnGoBack = findViewById(R.id.btnGoBack)
         btnAddData = findViewById(R.id.btnAddData)
         btnSave = findViewById(R.id.btnSave)
@@ -49,8 +55,10 @@ class AddDocumentActivity : AppCompatActivity() {
                 else -> null
             }
             checkEnableSaveButton()
-            btnAddDocument.isEnabled = true
+            btnAddSoat.isEnabled = true
+            btnAddCDA.isEnabled = true
             btnAddPhoto.isEnabled = true
+            btnAddData.isEnabled = true
         }
 
         btnAddPhoto.setOnClickListener {
@@ -59,10 +67,16 @@ class AddDocumentActivity : AppCompatActivity() {
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
 
-        btnAddDocument.setOnClickListener {
+        btnAddSoat.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "application/pdf"
             startActivityForResult(intent, PICK_DOCUMENT_REQUEST)
+        }
+
+        btnAddCDA.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "application/pdf"
+            startActivityForResult(intent, PICK_DOCUMENT_REQUEST2)
         }
 
         btnGoBack.setOnClickListener {
@@ -76,13 +90,25 @@ class AddDocumentActivity : AppCompatActivity() {
 
         btnSave.setOnClickListener {
             // Save the data and navigate to the main view to display the card
-            val intent = Intent()
-            intent.putExtra("imageUri", imageUri.toString())
-            intent.putExtra("documentUri", documentUri.toString())
-            intent.putExtra("vehicleType", vehicleType)
-            setResult(Activity.RESULT_OK, intent)
+            saveDataToSharedPreferences()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
             finish()
         }
+    }
+
+    private fun saveDataToSharedPreferences() {
+        val sharedPref = getSharedPreferences("com.example.papers.PREFERENCES", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("imageUri", imageUri?.toString() ?: "")
+        editor.putString("documentSoatUri", documentSoat?.toString() ?: "")
+        editor.putString("documentCDAUri", documentCDA?.toString() ?: "")
+        editor.putString("vehicleType", vehicleType ?: "")
+        editor.putString("plate", plate ?: "")
+        editor.putString("model", brand ?: "")
+        editor.putString("brand", model ?: "")
+
+        editor.apply()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,22 +127,34 @@ class AddDocumentActivity : AppCompatActivity() {
                         imgPhotoStatus.setImageResource(R.drawable.ic_check)
                         showStatusImage(imgPhotoStatus)
                     } else {
-                        imgPhotoStatus.setImageResource(R.drawable.ic_error) // Your red X icon
+                        imgPhotoStatus.setImageResource(R.drawable.ic_error)
                         imgPhotoStatus.visibility = ImageView.VISIBLE
                     }
                 }
                 PICK_DOCUMENT_REQUEST -> {
-                    documentUri = uri
+                    documentSoat = uri
                     if (uri != null) {
-                        imgPhotoStatus.setImageResource(R.drawable.ic_check)
-                        showStatusImage(imgPhotoStatus)
+                        imgDocumentStatus.setImageResource(R.drawable.ic_check)
+                        showStatusImage(imgDocumentStatus)
+                    } else {
+                        imgDocumentStatus.setImageResource(R.drawable.ic_error) // Your red X icon
+                        imgDocumentStatus.visibility = ImageView.VISIBLE
+                    }
+                }
+                PICK_DOCUMENT_REQUEST2 -> {
+                    documentCDA = uri
+                    if (uri != null) {
+                        imgDocumentStatus.setImageResource(R.drawable.ic_check)
+                        showStatusImage(imgDocumentStatus)
                     } else {
                         imgDocumentStatus.setImageResource(R.drawable.ic_error) // Your red X icon
                         imgDocumentStatus.visibility = ImageView.VISIBLE
                     }
                 }
                 ADD_DATA_REQUEST -> {
-                    // Handle additional data from AddDataActivity
+                    plate = data.getStringExtra("plate")
+                    brand = data.getStringExtra("brand")
+                    model = data.getStringExtra("model")
                 }
             }
             checkEnableSaveButton()
@@ -131,12 +169,14 @@ class AddDocumentActivity : AppCompatActivity() {
     }
 
     private fun checkEnableSaveButton() {
-        btnSave.isEnabled = imageUri != null && documentUri != null && vehicleType != null
+        btnSave.isEnabled = imageUri != null && documentSoat != null && documentCDA != null && vehicleType != null && plate != null && brand != null && model != null
     }
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
         private const val PICK_DOCUMENT_REQUEST = 2
+        private const val PICK_DOCUMENT_REQUEST2 = 4
         private const val ADD_DATA_REQUEST = 3
     }
+
 }
