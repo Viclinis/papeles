@@ -29,7 +29,7 @@
                 android:id="@+id/txtVehicleType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Vehículo"
+                android:text="Tipo de Vehículos"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 

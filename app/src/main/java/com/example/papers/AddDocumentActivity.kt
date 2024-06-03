@@ -91,8 +91,18 @@ class AddDocumentActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             // Save the data and navigate to the main view to display the card
             saveDataToSharedPreferences()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            //val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent().apply {
+                putExtra("imageUri", imageUri.toString())
+                putExtra("documentSoat", documentSoat.toString())
+                putExtra("documentCDA", documentCDA.toString())
+                putExtra("vehicleType", vehicleType)
+                putExtra("plate", plate)
+                putExtra("brand", brand)
+                putExtra("model", model)
+            }
+            setResult(Activity.RESULT_OK, intent)
+            //startActivity(intent)
             finish()
         }
     }
@@ -107,7 +117,17 @@ class AddDocumentActivity : AppCompatActivity() {
         editor.putString("plate", plate ?: "")
         editor.putString("model", brand ?: "")
         editor.putString("brand", model ?: "")
-
+/*
+        val intent = Intent()
+        intent.putExtra("imageUri", imageUri.toString())
+        intent.putExtra("documentUri", documentSoat.toString())
+        intent.putExtra("documentUri", documentCDA.toString())
+        intent.putExtra("vehicleType", vehicleType)
+        intent.putExtra("plate", plate)
+        intent.putExtra("brand", brand)
+        intent.putExtra("model", model)
+        setResult(Activity.RESULT_OK, intent)
+*/
         editor.apply()
     }
 
